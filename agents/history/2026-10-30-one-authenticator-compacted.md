@@ -73,3 +73,13 @@ Managed candidate and owner deployment remain next; do not claim completed yet.
 Public preview1 was published before managed release. Found manual-save-during-QR
 edge case retaining camera stream; preview2 stops scanning before manual save.
 Do not overwrite preview1 immutable assets; managed pin advances to preview2.
+
+Managed final6 acceptance passed all phases, including original-password SSO
+after rollback/reapply. Suite109 source frozen/tagged2da2fe8; concurrent Remote8
+pin preserved in rebuild and all non-Remote app contracts/packages (including
+manager, provider and authenticator) proved identical to the tested build. Final
+35-app inventory passed. Mandatory signed-Android publisher is uploading draft
+429531649; HTTP408 interrupted one batch. Completed assets are verified, missing
+assets retried; release remains unpublished until mandatory publisher resumes
+and public channel verification succeeds. Owner installation remains108, untouched.
+Go runtime BSD license supplement added without replacing published assets.

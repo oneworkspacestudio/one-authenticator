@@ -20,8 +20,14 @@ OneAccount settings UI provisioned an independent phone browser vault; a code
 generated after stopping its host enabled MFA on the server. Synthetic Workspace
 HTTP/WebSocket/event-stream tests verify central revocation.
 
-Pending: complete
-managed catalog/fresh install/upgrade/recovery; physical Android Chrome and iPhone
+Passed: complete35-app catalog, actual fresh managed setup and protected
+Workspace108→109 upgrade, preserved identity/selection/files, old-controller
+rejection, central old-hub-session revocation and TOTP SSO to Drive/Docs/Photos;
+supported rollback/reapply with original-password SSO. Real PWA1→2 worker update
+preserved the encrypted vault and offline unlock. QR recognition and manual-save
+camera track shutdown passed with a synthetic camera.
+
+Pending: physical Android Chrome and iPhone
 Safari PWA; signed suite publication/channel; protected owner installation.
 
 Physical phone, reboot, clean-host and production security certification are not

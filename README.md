@@ -66,3 +66,6 @@ storage and offline lifecycle in synthetic Chrome. Install its development-only
 Playwright dependency before running; it is absent from the shipped application.
 
 See [security and architecture](docs/SECURITY.md) and [delivery evidence](docs/ACCEPTANCE.md).
+
+The [Go runtime BSD notice](docs/GO-RUNTIME-LICENSE.txt) accompanies the Windows
+binary as a supplemental release asset. Existing preview assets remain immutable.

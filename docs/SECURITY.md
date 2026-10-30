@@ -25,7 +25,8 @@ can recover the key. Back up the protected account data using supported tools,
 never export an ordinary database/secret-key pair to cloud storage.
 
 Pending server-side enrolments expire in five minutes. Every security change
-requires a fresh password. A completed MFA sign-in supplies equivalent factor
+requires password verification within the last five minutes; the UI asks again
+for each action. A completed MFA sign-in supplies equivalent factor
 evidence for five minutes; otherwise a fresh TOTP or unused recovery code is
 required. This authenticated context does not permit reuse of a raw code.
 Verification consumes the setup OTP before activation. Recovery codes contain
