@@ -1,0 +1,17 @@
+import { createElement as h, type ReactNode, useContext, createContext } from 'react';
+export const Controls = createContext({ busy: false });
+type Props = { children?: ReactNode; [key: string]: any };
+export const Page = ({children}: Props) => h('main',{},children);
+export const Stack = ({children,gap}: Props) => h('div',{className:`stack stack-${gap || 'sm'}`},children);
+export const Row = ({children}: Props) => h('div',{className:'row'},children);
+export const Card = ({children,variant}: Props) => h('section',{className:`card ${variant || ''}`},children);
+export const Heading = ({children,level}: Props) => h(level === 1 ? 'h1' : 'h2',{},children);
+export const Text = ({children,role}: Props) => h('p',{role},children);
+export const Image = (props: Props) => h('img',props);
+export const Link = ({children,href}:Props) => h('a',{href,className:'button--apps','data-workspace-apps-trigger':true},children);
+export const Badge = ({children}: Props) => h('span',{className:'badge'},children);
+export const Alert = ({children}: Props) => h('div',{className:'alert',role:'alert'},children);
+export const Button = ({children,variant,onClick}: Props) => h('button',{className:`button button-${variant || 'primary'}`,onClick,disabled:useContext(Controls).busy,type:'button'},children);
+export const Input = ({label,name,type,autocomplete}: Props) => h('label',{},label,h('input',{name,type:type || 'text',autoComplete:autocomplete,spellCheck:false,autoCapitalize:'none',maxLength:1024}));
+export const Metric = ({value,label}: Props) => h('div',{className:'metric','aria-label':label},value);
+export const Section = ({variant,value}: Props) => variant === 'camera' ? h('section',{className:'camera'},h('video',{id:'qr-camera',muted:true,playsInline:true,'aria-label':'Scan the OneAccount setup QR'})) : h('div',{className:'countdown',role:'timer','aria-label':`${Math.ceil(value)} seconds until next code`},h('svg',{viewBox:'0 0 100 100','aria-hidden':true},h('circle',{cx:50,cy:50,r:44,stroke:'#e9eef9'}),h('circle',{className:'progress',cx:50,cy:50,r:44,stroke:value<=5?'#8461cb':'#2e67de',strokeDasharray:276.46,strokeDashoffset:276.46*(1-value/30)})),h('span',{},Math.ceil(value),h('small',{},'seconds')));

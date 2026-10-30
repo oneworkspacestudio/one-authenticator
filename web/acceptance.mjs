@@ -1,0 +1,37 @@
+import {chromium} from 'playwright';
+import assert from 'node:assert/strict';
+import {writeFileSync} from 'node:fs';
+import {totp} from './src/crypto.ts';
+const origin=process.env.AUTHENTICATOR_TEST_ORIGIN||'http://localhost:18798';
+assert(origin.startsWith('http://localhost:'));
+const output=process.env.AUTHENTICATOR_TEST_OUTPUT;assert(output);
+const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe'});
+const context=await browser.newContext({viewport:{width:390,height:844}});
+const errors=[];const requests=[];const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>requests.push(r.url()));
+const secret='GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ';const passphrase='Synthetic local vault passphrase';
+try{
+ await page.goto(origin);await page.getByRole('button',{name:'Add OneAccount',exact:true}).waitFor();
+ await page.evaluate(()=>navigator.serviceWorker.ready);await page.reload();await page.waitForFunction(()=>navigator.serviceWorker.controller);
+ await page.screenshot({path:output+'/welcome-phone.png',fullPage:true});
+ await page.getByRole('button',{name:'Add OneAccount',exact:true}).click();
+ await page.getByLabel('OneAccount setup key or provisioning URI').fill(`otpauth://totp/OneAccount:test%40example.test?issuer=OneAccount&secret=${secret}`);
+ await page.getByLabel('Account label',{exact:true}).fill('Synthetic member');await page.getByLabel('Device label',{exact:true}).fill('Synthetic phone');
+ await page.getByLabel('Vault passphrase (14+ characters)',{exact:true}).fill(passphrase);await page.getByLabel('Confirm vault passphrase',{exact:true}).fill(passphrase);
+ const started=Date.now();await page.getByRole('button',{name:'Encrypt and save',exact:true}).click();await page.getByRole('button',{name:'Lock vault',exact:true}).waitFor();const measuredEncryptionMs=Date.now()-started;
+ const displayed=(await page.locator('.metric').textContent()).replaceAll(' ','');assert.equal(displayed,await totp(secret));
+ const encrypted=await page.evaluate(()=>new Promise((resolve,reject)=>{const r=indexedDB.open('one-authenticator',1);r.onsuccess=()=>{const q=r.result.transaction('vault').objectStore('vault').get('account');q.onsuccess=()=>resolve(q.result);q.onerror=reject;};}));
+ assert(!JSON.stringify(encrypted).includes(secret));assert(!JSON.stringify(encrypted).includes(passphrase));
+ await page.screenshot({path:output+'/code-phone.png',fullPage:true});
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ await page.getByRole('button',{name:'Lock vault',exact:true}).click();assert.equal(await page.locator('.metric').count(),0);
+ await context.setOffline(true);await page.reload();await page.getByLabel('Vault passphrase',{exact:true}).fill('wrong synthetic password');await page.getByRole('button',{name:'Unlock',exact:true}).click();await page.getByRole('alert').waitFor();assert.equal(await page.locator('.metric').count(),0);
+ await page.getByLabel('Vault passphrase',{exact:true}).fill(passphrase);await page.getByRole('button',{name:'Unlock',exact:true}).click();await page.getByRole('button',{name:'Lock vault',exact:true}).waitFor();assert.equal((await page.locator('.metric').textContent()).replaceAll(' ',''),await totp(secret));
+ await page.getByRole('button',{name:'Lock vault',exact:true}).click();await page.close();const reopened=await context.newPage();await reopened.goto(origin);await reopened.getByLabel('Vault passphrase',{exact:true}).fill(passphrase);await reopened.getByRole('button',{name:'Unlock',exact:true}).click();await reopened.getByRole('button',{name:'Lock vault',exact:true}).waitFor();
+ assert.equal((await reopened.locator('.metric').textContent()).replaceAll(' ',''),await totp(secret));
+ await reopened.setViewportSize({width:1280,height:900});await reopened.screenshot({path:output+'/code-desktop.png',fullPage:true});assert(await reopened.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ await reopened.evaluate(()=>{Object.defineProperty(document,'hidden',{value:true,configurable:true});document.dispatchEvent(new Event('visibilitychange'));});await reopened.getByRole('button',{name:'Unlock',exact:true}).waitFor();assert.equal(await reopened.locator('.metric').count(),0);
+ const cached=await reopened.evaluate(async()=>{const result=[];for(const name of await caches.keys()){const c=await caches.open(name);for(const r of await c.keys())result.push({url:r.url,text:await(await c.match(r)).text()});}return result;});
+ assert(cached.length>4);assert(!cached.some(r=>r.text.includes(secret)||r.url.includes(secret)||r.text.includes(passphrase)));assert(!requests.some(u=>new URL(u).origin!==origin));assert.deepEqual(errors,[]);
+ writeFileSync(output+'/browser-acceptance.json',JSON.stringify({passed:true,physicalDevice:false,browser:'Chrome headless',offlineReloadUnlock:true,reopenOffline:true,rfcCodeMatch:true,encryptedIndexedDB:true,wrongPassphraseDenied:true,backgroundLock:true,noCachedSecrets:true,noThirdPartyRequests:true,phoneAndDesktopLayout:true,measuredEncryptionMs},null,2));
+ console.log('PASS: genuine offline TOTP, encrypted IndexedDB, wrong-passphrase denial, offline reload/reopen, background lock, scoped asset cache and phone/desktop layout');
+}finally{await context.close();await browser.close();}

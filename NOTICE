@@ -1,0 +1,11 @@
+One Authenticator
+Copyright 2026 One Workspace contributors.
+
+The application uses React and React DOM, hash-wasm, and the ZXing browser/library
+packages. Their licences and attribution are included in THIRD-PARTY-LICENSES.txt.
+Web Crypto provides HMAC-SHA-1 and AES-GCM; hash-wasm provides Argon2id/WASM.
+TOTP interoperability follows RFC 6238 and RFC 4226.
+Screens are authored in AUI and compiled with @codedia/parser 0.2.1.
+
+OneAccount/MyAccounts is a separate Casdoor-derived Apache-2.0 component. Its
+source, inherited notices and authentication database remain in that repository.

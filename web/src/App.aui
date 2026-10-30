@@ -1,0 +1,86 @@
+Page Authenticator
+  Stack gap=lg
+    Row
+      Image src="./icon.svg" alt="" width=48 height=48
+      Stack
+        Heading level=1 "One Authenticator"
+        Text "Your OneAccount security code"
+    Link href="../" variant=apps "Workspace"
+    If condition=$error
+      Alert role=alert $error
+    If condition=$busy
+      Text role=status "Securing your vault…"
+    If condition=$welcome
+      Card
+        Badge "ONE ACCOUNT. YOUR DEVICE."
+        Heading level=2 "A little code. A stronger account."
+        Text "Keep your OneAccount sign-in code with you, even without internet. No OneAccount login is needed here."
+        Button action=setup "Add OneAccount"
+        Button variant=secondary action=install "Install on this device"
+        Text "Clearing site data or uninstalling can erase your vault. Save your OneAccount recovery codes separately."
+    If condition=$setup
+      Card
+        Heading level=2 "Add OneAccount"
+        Text "In OneAccount, open Security → Two-factor authentication. Scan the setup QR or enter its key below."
+        Button variant=secondary action=scan "Scan QR code"
+        If condition=$scanning
+          Section variant=camera
+        Input name=setupKey label="OneAccount setup key or provisioning URI" type=password autocomplete=off
+        Input name=accountLabel label="Account label" autocomplete=off
+        Input name=deviceLabel label="Device label" autocomplete=off
+        Input name=passphrase label="Vault passphrase (14+ characters)" type=password autocomplete=new-password
+        Input name=confirmPassphrase label="Confirm vault passphrase" type=password autocomplete=new-password
+        Text "Choose a separate, strong passphrase. It cannot be reset here. No PIN or biometric key is stored."
+        Button action=save "Encrypt and save"
+        Button variant=secondary action=cancel "Cancel"
+    If condition=$locked
+      Card
+        Badge "ENCRYPTED ON THIS DEVICE"
+        Heading level=2 "Unlock your vault"
+        Text "Use your independent vault passphrase. Your code stays on this device."
+        Input name=unlockPassphrase label="Vault passphrase" type=password autocomplete=current-password
+        Button action=unlock "Unlock"
+        Button variant=secondary action=help "Lost device or passphrase?"
+    If condition=$codes
+      Card variant=code
+        Badge "OneAccount"
+        Text $maskedLabel
+        Metric value=$code label="Current six-digit code"
+        Section variant=countdown value=$remaining
+        Button action=copy "Copy code"
+        Text role=status $copyStatus
+        Badge $connection
+        Row
+          Button variant=secondary action=settings "Settings"
+          Button variant=secondary action=lock "Lock vault"
+    If condition=$settings
+      Card
+        Heading level=2 "Your device, your vault"
+        Text $device
+        Text "The vault always locks when you leave the app. Choose an idle limit below. Codes and keys are never backed up to My Drive."
+        Button variant=secondary action=idle1 "Lock after one minute idle (default)"
+        Button variant=secondary action=idle5 "Lock after five minutes idle"
+        Text "Clock trouble? Enable automatic date and time in your device settings. Codes change every 30 seconds."
+        Text "One enrolled device is supported per OneAccount account in this release. Replace it in OneAccount Security."
+        Text "Version 0.1.0-preview.1 · Argon2id / AES-256-GCM"
+        Button variant=secondary action=help "Enrollment and recovery help"
+        Button variant=danger action=remove "Remove local account"
+        Button variant=secondary action=back "Back to code"
+    If condition=$removing
+      Card
+        Heading level=2 "Remove this local account?"
+        Text "This erases the local code generator. It does not disable MFA in OneAccount. Make sure you have working recovery codes or another sign-in method."
+        Input name=removeConfirmation label="Type REMOVE to confirm" autocomplete=off
+        Button variant=danger action=confirmRemove "Erase local vault"
+        Button variant=secondary action=back "Keep account"
+    If condition=$help
+      Card
+        Heading level=2 "Keep a way back in"
+        Text "Android: open this HTTPS page in Chrome and choose Install app. iPhone: use Safari → Share → Add to Home Screen. Install before enrolling."
+        Text "In OneAccount Security, enable two-factor authentication and verify the first code. Save all ten recovery codes separately from your phone."
+        Text "Lost your phone or passphrase? At OneAccount sign-in, choose Use a recovery code. Then replace your authenticator and rotate recovery codes."
+        Text "If every recovery code is lost, contact your Workspace administrator for assisted recovery. Email alone cannot bypass MFA."
+        If condition=$hasVault
+          Button variant=danger action=remove "Reset a lost local vault"
+        Text "TOTP does not prevent phishing. Enter codes only on your trusted OneAccount address. Browser extensions and an unlocked compromised device can read codes."
+        Button variant=secondary action=back "Back"
