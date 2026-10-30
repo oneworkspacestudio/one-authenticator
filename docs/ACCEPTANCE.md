@@ -1,7 +1,7 @@
 # Delivery evidence
 
-Work in progress. A release and owner installation must not be claimed from
-source changes or a standalone Windows preview alone.
+Published and installed through the managed updater. See
+[final delivery and exact release evidence](DELIVERY-2026-10-30.md).
 
 Passed so far: RFC6238 SHA1 reference vectors, leading zeros, rollover,
 provisioning restrictions, vault authenticated encryption, wrong passphrase and
@@ -27,9 +27,16 @@ supported rollback/reapply with original-password SSO. Real PWA1→2 worker upda
 preserved the encrypted vault and offline unlock. QR recognition and manual-save
 camera track shutdown passed with a synthetic camera.
 
-Pending: physical Android Chrome and iPhone
-Safari PWA; signed suite publication/channel; protected owner installation.
+Publication and installation passed: 343 immutable assets, mandatory signed
+Android11, public update channel, fresh online35-app setup and supported paired
+owner108-to109 update with recovery and preservation invariants. Both paired
+services and public Authenticator health passed. All 34 reported process services
+were running with no failures; the earlier Cinema failure was absent at deployment
+baseline and completion. No phone was enrolled.
+
+Pending: physical Android Chrome and iPhone Safari PWA, real camera hardware,
+reboot/service and clean-host acceptance.
 
 Physical phone, reboot, clean-host and production security certification are not
 established by browser emulation. Record completed evidence and limitations here
-before publication.
+as further device checks are performed.
