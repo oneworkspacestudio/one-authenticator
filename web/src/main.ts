@@ -46,6 +46,7 @@ function App(){
     setTimeout(()=>{void navigator.clipboard.readText().then(v=>{if(v===current)return navigator.clipboard.writeText('');}).catch(()=>{});},15000);return;
    }
    if(name==='save'){
+     stopScan();
     const phrase=input('passphrase');if(phrase!==input('confirmPassphrase'))throw Error('Passphrases do not match.');
     const a=provision(input('setupKey'),input('accountLabel') || 'OneAccount',input('deviceLabel') || 'My phone');const generation=alive.current;setBusy(true);
     const encrypted=await seal(a,phrase);await storage('put',encrypted);setVault(encrypted);clearInputs();

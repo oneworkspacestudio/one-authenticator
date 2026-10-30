@@ -69,3 +69,7 @@ Synthetic fake-camera QR recognition and immediate media-track shutdown passed.
 Final PWA npm audit reports zero known vulnerabilities. Main advanced to public108;
 merged its Remote7 pin/history/channel without dropping concurrent work.
 Managed candidate and owner deployment remain next; do not claim completed yet.
+
+Public preview1 was published before managed release. Found manual-save-during-QR
+edge case retaining camera stream; preview2 stops scanning before manual save.
+Do not overwrite preview1 immutable assets; managed pin advances to preview2.

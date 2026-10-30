@@ -80,7 +80,7 @@ export function Authenticator({ data, onAction }: { data: any; onAction: (name: 
             <Button variant="secondary" onClick={() => onAction("idle5")}>Lock after five minutes idle</Button>
             <Text>Clock trouble? Enable automatic date and time in your device settings. Codes change every 30 seconds.</Text>
             <Text>One enrolled device is supported per OneAccount account in this release. Replace it in OneAccount Security.</Text>
-            <Text>Version 0.1.0-preview.1 · Argon2id / AES-256-GCM</Text>
+            <Text>Version 0.1.0-preview.2 · Argon2id / AES-256-GCM</Text>
             <Button variant="secondary" onClick={() => onAction("help")}>Enrollment and recovery help</Button>
             <Button variant="danger" onClick={() => onAction("remove")}>Remove local account</Button>
             <Button variant="secondary" onClick={() => onAction("back")}>Back to code</Button>

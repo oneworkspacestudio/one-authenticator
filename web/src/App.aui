@@ -62,7 +62,7 @@ Page Authenticator
         Button variant=secondary action=idle5 "Lock after five minutes idle"
         Text "Clock trouble? Enable automatic date and time in your device settings. Codes change every 30 seconds."
         Text "One enrolled device is supported per OneAccount account in this release. Replace it in OneAccount Security."
-        Text "Version 0.1.0-preview.1 · Argon2id / AES-256-GCM"
+        Text "Version 0.1.0-preview.2 · Argon2id / AES-256-GCM"
         Button variant=secondary action=help "Enrollment and recovery help"
         Button variant=danger action=remove "Remove local account"
         Button variant=secondary action=back "Back to code"
