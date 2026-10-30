@@ -7,7 +7,8 @@ stale checkouts; do not stage it. Actual provider is oneworkspacestudio/myaccoun
 Canonical new app I:/Projects/one-authenticator. Isolated Workspace clone and
 provider worktree are I:/Projects/tooling/one-authenticator-20261030/{workspace,accounts}.
 Both branches codex/one-authenticator; provider base f631efc, Workspace f8d91d5.
-Preserve unrelated original checkout edits. No new commits/push/releases yet.
+Preserve unrelated original checkout edits. Initial source committed locally;
+public repository created with Actions disabled. No release published yet.
 
 PWA: React/TS/Vite, generated AUI screen, only OneAccount provisioning, Web Crypto
 RFC6238, Argon2id64MiB/3passes/1lane + AES256GCM, encrypted IndexedDB, independent
@@ -56,8 +57,15 @@ Current prospective versions app0.1.0-preview.1, provider preview-20261030.1,
 Workspace109 (recheck concurrent public releases first). Another independent task
 was building Workspace108; preserve its changes/releases when merging main.
 
-Suite signed-Android credentials are absent. Asked user asynchronously to make
-the existing signing credentials available locally, never paste secrets. Repository
+Suite signing configuration was found in the existing protected per-user
+configuration used by public108; no new key is created. Repository
 docs/RELEASING.md requires signed Android via publish-release.ps1. Prior107-only
 exception does not authorize skipping signing here. Components can use their own
 release workflows. No physical Android/iPhone, reboot or clean-host acceptance.
+
+Final exact native builds passed expanded MFA and actual settings-UI→independent
+offline PWA provisioning, recovery display/removal and encrypted backup/restore.
+Synthetic fake-camera QR recognition and immediate media-track shutdown passed.
+Final PWA npm audit reports zero known vulnerabilities. Main advanced to public108;
+merged its Remote7 pin/history/channel without dropping concurrent work.
+Managed candidate and owner deployment remain next; do not claim completed yet.
